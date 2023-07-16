@@ -1,57 +1,51 @@
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
+const nodeMail = require("nodemailer");
+const path = require("path");
+
 const app = express();
-const nodemailer = require('nodemailer');
 
-const port = 3000;
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
-// Enable CORS middleware
-app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
-
-app.use(express.json());
-
-// Handle POST requests to /submit-form
-app.post('/submit-form', (req, res) => {
-  // Process the received form data
-  const { name, email, message } = req.body;
-
-  // Create a transporter for sending emails
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
+async function mainMail(email, subject, message) {
+  const transporter = await nodeMail.createTransport({
+    service: "gmail",
     auth: {
-      user: 'nautiyalar@gmail.com', // Replace with your Gmail address
-      pass: 'Barbie_1926#' // Replace with your Gmail password
-    }
+      user: process.env.GMAIL_USER,
+      pass: process.env.PASSWORD,
+    },
   });
-
-  // Define the email message
-  const mailOptions = {
-    from: 'nautiyalar@gmail.com',
-    to: 'arun@trustheal.in', // Replace with the recipient's email address
-    subject: 'New Contact Form Submission',
-    text: `
-      Name: ${name}
-      Email: ${email}
-      Message: ${message}
-    `
+  const mailOption = {
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject: subject,
+    html: `You got a message from 
+    Email : ${email}
+    Subject: ${subject}
+    Message: ${message}`,
   };
+  try {
+    await transporter.sendMail(mailOption);
+    return Promise.resolve("Message Sent Successfully!");
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
 
-  // Send the email
-  transporter.sendMail(mailOptions, function(error, info) {
-    if (error) {
-      console.error(error);
-      res.status(500).send('An error occurred while sending the email.');
-    } else {
-      console.log('Email sent: ' + info.response);
-      res.sendStatus(200);
-    }
-  });
+app.route("/").get(function (req, res) {
+  res.sendFile(path.join(__dirname, '/contact.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.post("/contact", async (req, res, next) => {
+  const { email, subject, message } = req.body;
+  try {
+    console.log(email);
+    await mainMail(email, subject, message);
+    res.send("Message Successfully Sent!");
+  } catch (error) {
+    res.send("Message Could not be Sent");
+  }
 });
+
+app.listen(3000, () => console.log("Server is running!"));
