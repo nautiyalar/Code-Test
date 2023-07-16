@@ -1,0 +1,75 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="http://fonts.cdnfonts.com/css/whitney-2" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+    .container {
+      height: 700px;
+      width: 800px;
+      margin-top: 20px;
+      /* From https://css.glass */
+      background: rgba(13, 9, 211, 0.815);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0.5, 0.1);
+      backdrop-filter: blur(1.7px);
+      -webkit-backdrop-filter: blur(1.7px);
+      border: 0px;
+    }
+
+    .center {
+      display: table;
+      height: 100%;
+      width: 100%;
+    }
+
+    .center>span {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    textarea {
+      resize: none;
+    }
+  </style>
+</head>
+
+<body style="box-sizing: border-box; font-family: 'Whitney'; background: #ffffff81;">
+  <div class="container">
+    <div class="header" style=" text-align: center; padding-top: 5%; color:#0D122B">
+      <h1 style="color: white;">Contact Us</h1>
+      <p style="width: 60%; margin: auto; color: white;"> Please fill out the form and we'll
+        be in touch as soon as possible.</p>
+    </div>
+    <div class="center">
+      <form action="/contact" id="contact-form" method="post"
+        style="margin: 10%; margin-left:5%; width: auto; color: aliceblue;">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"
+            placeholder="Enter email">
+          <small id="emailHelp" >We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Subject</label>
+          <input type="text" class="form-control" id="subject" name="subject" aria-describedby="emailHelp"
+            placeholder="Subject">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="5" placeholder="Message"></textarea>
+        </div>
+        <button type="submit" style="background:#0263e0 !important;" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
